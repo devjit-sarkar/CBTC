@@ -1,6 +1,6 @@
 import tkinter
 import os
-
+import random
 
 #image_path = os.path.join(base_folder, 'blueface.png')
 
@@ -10,6 +10,7 @@ import os
 #or scrap this plan and use strings
 #p<r<s:values 
 #paper beats rock, rock beats scissors, exception is paper is beaten by scissors
+objects = {0:"rock",1:"paper",2:"scissors"}
 winning = {"rock":"scissors","scissors":"paper","paper":"rock"}
 losing = {"paper":"scissors","scissors":"rock","rock":"paper"}
 
@@ -23,21 +24,72 @@ losing = {"paper":"scissors","scissors":"rock","rock":"paper"}
 #     #take input from tkinter buttons
 #     return #the input string
 
+def winner(player, photo):
+    opponent = random.randint(0,2)
 
-def input_rock():
-    return
+    rock_button.grid_forget()
+    paper_button.grid_forget()
+    scissors_button.grid_forget()
 
-def input_scissors():
-    return
+    #player's choice v/s system's choice
+    outcome_label = tkinter.Label(text="You chose:\t\tv/s\t\tSystem chose:", font="comicsans 25 bold", bg="#A1D4B1")
+    outcome_label.pack(padx=50, pady=50)
 
-def input_paper():
-    return
+    #player_choice_image = os.path.join(base_folder, f'{player}.png')
+    system_choice_image_path = os.path.join(base_folder, f'{objects[opponent]}.png')
+    #print(system_choice_image_path)
+    system_choice_image = tkinter.PhotoImage(file=system_choice_image_path)
+
+    player_choice = tkinter.Label(image=photo)
+    system_choice = tkinter.Label(image=system_choice_image)
+
+    player_choice.pack(side="left",padx=50, pady=60)
+    system_choice.pack(side="right",padx=50, pady=60)
+
+    # Keep a reference to the images to prevent garbage collection
+    player_choice.image = photo
+    system_choice.image = system_choice_image
+
+    if winning[player] == objects[opponent]:
+        #return "You win!"
+        result_label = tkinter.Label(text="You won!", font="comicsans 25 bold", bg="#A1D4B1")
+        result_label.pack(padx=90,pady=120)
+    elif losing[player] == objects[opponent]:
+        #return "You lost!"
+        result_label = tkinter.Label(text="You lost!", font="comicsans 25 bold", bg="#A1D4B1")
+        result_label.pack(padx=90,pady=120)
+    else:
+        #return "Tied!"
+        result_label = tkinter.Label(text="Tied!", font="comicsans 25 bold", bg="#A1D4B1")
+        result_label.pack(padx=90,pady=120)
+
+    try_again_button = tkinter.Button(text="Try Again?", command=try_again, borderwidth=5)
+    #try_again_button.grid(row = 5,sticky = "NSEW")
+    try_again_button.pack(padx=110,pady=120)
+    winner.outcome_widgets = [outcome_label, player_choice, system_choice, try_again_button, result_label]
 
 def try_again():
-    return
+    for widgets in winner.outcome_widgets:
+        widgets.pack_forget()
+
+    rock_button.grid(row=1,column=1,padx=50, pady=150, sticky = "NSEW")
+    paper_button.grid(row=1,column=2,padx=50,pady=150, sticky = "NSEW")
+    scissors_button.grid(row=1,column=3,padx=50,pady=150, sticky = "NSEW")
+
+def input_rock():
+    outcome = winner("rock", rock_photo)
+    #print(outcome)
+
+def input_scissors():
+    outcome = winner("scissors", scissors_photo)
+    #print(outcome)
+
+def input_paper():
+    outcome = winner("paper", paper_photo)
+    #print(outcome)
 
 root = tkinter.Tk()
-
+#insert title later on
 base_folder = os.path.dirname(__file__)
 
 root.geometry("1200x700")
@@ -69,7 +121,7 @@ tkinter.Grid.columnconfigure(root,3,weight=1)
 
 #frame1.pack()
 
-rock_button = tkinter.Button(root,image=rock_photo, command=input_rock, borderwidth=10)
+rock_button = tkinter.Button(image=rock_photo, command=input_rock, borderwidth=10)
 rock_button.grid(row=1,column=1,padx=50, pady=150, sticky = "NSEW")
 
 paper_button = tkinter.Button(image=paper_photo, command=input_paper, borderwidth=10)
