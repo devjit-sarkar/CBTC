@@ -31,8 +31,27 @@ def winner(player, photo):
     paper_button.grid_forget()
     scissors_button.grid_forget()
 
+    if winning[player] == objects[opponent]:
+        #return "You win!"
+        background = "#ADD899"
+        root.configure(bg=background)
+        result_label = tkinter.Label(text="You won!", font="comicsans 25 bold", bg= background)
+        #result_label.pack(padx=90,pady=120)
+    elif losing[player] == objects[opponent]:
+        #return "You lost!"
+        background = "#FF6969"
+        root.configure(bg=background)
+        result_label = tkinter.Label(text="You lost!", font="comicsans 25 bold", bg= background)
+        #result_label.pack(padx=90,pady=120)
+    else:
+        #return "Tied!"
+        background = "#A1D4B1"
+        root.configure(bg=background)
+        result_label = tkinter.Label(text="Tied!", font="comicsans 25 bold", bg= background)
+        #result_label.pack(padx=90,pady=120)
+
     #player's choice v/s system's choice
-    outcome_label = tkinter.Label(text="You chose:\t\tv/s\t\tSystem chose:", font="comicsans 25 bold", bg="#A1D4B1")
+    outcome_label = tkinter.Label(text="You chose:\t\tv/s\t\tSystem chose:", font="comicsans 25 bold", bg=background)
     outcome_label.pack(padx=50, pady=50)
 
     #player_choice_image = os.path.join(base_folder, f'{player}.png')
@@ -50,18 +69,7 @@ def winner(player, photo):
     player_choice.image = photo
     system_choice.image = system_choice_image
 
-    if winning[player] == objects[opponent]:
-        #return "You win!"
-        result_label = tkinter.Label(text="You won!", font="comicsans 25 bold", bg="#A1D4B1")
-        result_label.pack(padx=90,pady=120)
-    elif losing[player] == objects[opponent]:
-        #return "You lost!"
-        result_label = tkinter.Label(text="You lost!", font="comicsans 25 bold", bg="#A1D4B1")
-        result_label.pack(padx=90,pady=120)
-    else:
-        #return "Tied!"
-        result_label = tkinter.Label(text="Tied!", font="comicsans 25 bold", bg="#A1D4B1")
-        result_label.pack(padx=90,pady=120)
+    result_label.pack(padx=90,pady=120)
 
     try_again_button = tkinter.Button(text="Try Again?", command=try_again, borderwidth=5)
     #try_again_button.grid(row = 5,sticky = "NSEW")
